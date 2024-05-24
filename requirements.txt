@@ -1,0 +1,11 @@
+streamlit
+python-dotenv
+crewai
+db-sqlite3
+requests
+langchain
+langchain_openai
+langchain_community
+pandas
+openpyxl
+datetime
