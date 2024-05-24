@@ -125,6 +125,7 @@ def main():
                             df = pd.read_excel(uploaded_file)
 
                         with st.spinner('Loading...'):
+                                print("started...")
                                 df=df.replace('#','',regex=True)
                                 df_new_2 = df.head(1)
                                 mini_df_list = []
