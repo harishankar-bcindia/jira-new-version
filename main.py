@@ -64,63 +64,66 @@ def crew_agent(ticket_detail):    #ticket detail is the df of each row.
     ticket_dict = ticket_detail.to_dict(orient="records")
 
     output_json = [
-                    {
-                        "is_summary_meaningful" : "Yes or No",
-                        "is_summary_with_description_meaningful" : "Yes or No",
-                        "is_summary_with_issuetype_meaningful" : "Yes or No",
-                        "your_reason" : "Your reason, why you selected Yes or No"
-                    },
-                    {
-                        "is_description_present" : "Yes or No",
-                        "is_description_meaningful" : "Yes or No",
-                        "has_acceptance_criteria" : "Yes or No",
-                        "new_description": "Based on the summary, what should be ideal description that descibes the acceptance criteria if required.",
-                        "your_reason" : "Your reason, why you selected Yes or No"
-                    },
-                    {
-                        "is_story_points_present" : "Yes or No",
-                        "is_story_points_meaningful" : "Yes or No",
-                        "expected_story_points" : "",
-                        "your_reason" : "Your reason, why you selected Yes or No",
+                    { "final_output" : [
+                                {
+                                    "is_summary_meaningful" : "Yes or No",
+                                    "is_summary_with_description_meaningful" : "Yes or No",
+                                    "is_summary_with_issuetype_meaningful" : "Yes or No",
+                                    "your_reason" : "Your reason, why you selected Yes or No"
+                                },
+                                {
+                                    "is_description_present" : "Yes or No",
+                                    "is_description_meaningful" : "Yes or No",
+                                    "has_acceptance_criteria" : "Yes or No",
+                                    "new_description": "Based on the summary, what should be ideal description that descibes the acceptance criteria if required.",
+                                    "your_reason" : "Your reason, why you selected Yes or No"
+                                },
+                                {
+                                    "is_story_points_present" : "Yes or No",
+                                    "is_story_points_meaningful" : "Yes or No",
+                                    "expected_story_points" : "",
+                                    "your_reason" : "Your reason, why you selected Yes or No",
 
-                    },
-                    {
-                        "ticket_type" : "Bug or Issue or Feature",
-                        "your_reason" : "Your reason, why you selected any one from Bug/Issue/Feature"
+                                },
+                                {
+                                    "ticket_type" : "Bug or Issue or Feature",
+                                    "your_reason" : "Your reason, why you selected any one from Bug/Issue/Feature"
 
-                    },
-                    {
-                        "is_label_present" : "Yes or No"
-                    },
-                    {
-                        "is_component_present" : "Yes or No"
-                    },
-                    {
-                        "is_epic_present" : "Yes or No"
+                                },
+                                {
+                                    "is_label_present" : "Yes or No"
+                                },
+                                {
+                                    "is_component_present" : "Yes or No"
+                                },
+                                {
+                                    "is_epic_present" : "Yes or No"
+                                }
+                            ]
                     }
                 ]
 
     task_description = f''' You have to fill complete raw json format provided based on your analysis of JIRA ticket.
                 Overall Raw Json to fill is: {output_json} \n\
                 Ticket details are : {ticket_dict} .
-                Analyse above ticket details, But before filling raw json you have to analyze below things carefully in ticket and do not write any comment in your output and return only filled raw json, do not delete or add any extra key:
+                Analyse above ticket details, But before filling raw json you have to analyze below things carefully in ticket and do not write any comment in your output and return only filled raw json in key name: "final_output", do not delete or add any extra key:
 
-                            Instruction 1: Analyze ticket summary and complete this part based on the conditions provided {output_json[0]},
+                            Instruction 1: Analyze ticket summary and complete this part based on the conditions provided {output_json[0]["final_output"][0]},
                                If ticket summary is meaningful, short yet descriptive, if yes then fill Yes else No in this key ->is_summary_meaningful.
                                 If ticket summary aligned with the description, whether the summary and description combined makes sense then is it meaningful, if yes then fill Yes else No in this key ->  is_summary_with_description_meaningful.
                                 If ticket summary aligned with the issue type it belongs to, whether the summary is aligned with the type of issue it is, then is it meaningful, if yes then fill Yes else No in this key ->  is_summary_with_issuetype_meaningful.
                                 And in key -> your_reason, provide the reason to select the above values.
-                                And do not add any characters like //,#,##,\\n or \.
+                                And do not add any characters like //,#,##,\\n or .
 
-                            Instruction 2: Analyze ticket description and complete this part based on the conditions provided {output_json[1]},
+                            Instruction 2: Analyze ticket description and complete this part based on the conditions provided {output_json[0]["final_output"][1]},
                                 If ticket has desciption or not then fill Yes or No in this key -> is_description_present.
                                 If ticket has description then is it meaningful and totally describe the issue in a proper way which can be understood by any team members. The description should be that clear that anyone could understand what needs to be done. Is it if yes then fill Yes else No in this key ->  is_description_meaningful.
                                 If ticket description contains the acceptance criteria, if yes then fill Yes else No in this key ->has_acceptance_criteria.
                                 If ticket is not meaningful and does not have acceptance criteria, then based on the ticket summary generate a new description for that ticket and if acceptance criteria can be generated then generate it in Even,When and Then format. Only when the description is meaninful and has an acceptance criteria, only then the new description should not be generated. In key -> new_description
                                 In key -> your_reason, provide the reason to select the above values.
-                                And do not add any characters like //,#,##,\\n or \.
+                                And do not add any characters like //,#,##,\\n or .
 
-                            Instruction 3: Analyze ticket story points and complete this part based on the conditions provided {output_json[2]},
+                            Instruction 3: Analyze ticket story points and complete this part based on the conditions provided {output_json[0]["final_output"][2]},
                                 If ticket has story points values or not then fill Yes or No in this key -> is_story_points_present.
                                 If ticket has story points then are these story points justifiable to the actual efforts required to properly complete the task based on summary,description and the issue type it belongs to given that 1 story is equivalent to 1 day of effort,
                                 You should understand that the complexity is highest to lowest for the following issue types:
@@ -137,7 +140,7 @@ def crew_agent(ticket_detail):    #ticket detail is the df of each row.
                                 And in key -> your_reason, provide the reason to select above values.
                                 And do not add any characters like //,#,##,\\n or \.
 
-                            Instruction 4: Analyze overall ticket, mainly the title and the decription, and complete this part based on the conditions provided {output_json[3]},
+                            Instruction 4: Analyze overall ticket, mainly the title and the decription, and complete this part based on the conditions provided {output_json[0]["final_output"][3]},
                                 According to your overall analysis what should be the category of ticket: Bug or Feature or Other. You should refer to the below definition:
                                 Bug: A flaw or defect in the software that causes it to behave unexpectedly or not as intended.
                                 Feature: A new functionality or capability added to the software to enhance its usability or meet user requirements.
@@ -148,15 +151,15 @@ def crew_agent(ticket_detail):    #ticket detail is the df of each row.
                                 And in key -> your_reason, provide the reason to select above value.
                                 And do not add any characters like //,#,##,\\n or \.
 
-                            Instruction 5: Analyze ticket labels and complete this part based on conditions provided {output_json[4]},
+                            Instruction 5: Analyze ticket labels and complete this part based on conditions provided {output_json[0]["final_output"][4]},
                                 If ticket has labels present or not then fill Yes or No in this key -> is_label_present.
                                 And do not add any characters like //,#,##,\\n or \.
 
-                            Instruction 6: Analyze ticket component and complete this part based on conditions provided {output_json[5]},
+                            Instruction 6: Analyze ticket component and complete this part based on conditions provided {output_json[0]["final_output"][5]},
                                 If ticket has components present or not then fill Yes or No in this key -> is_component_present.
                                 And do not add any characters like //,#,##,\\n or \.
 
-                            Instruction 7: Analyze ticket Epic Link Summary and complete this part based on the conditions provided{output_json[6]},
+                            Instruction 7: Analyze ticket Epic Link Summary and complete this part based on the conditions provided{output_json[0]["final_output"][6]},
                                 If Epic link summary is present then mark Yes, if it is not present then mark No in this key -> is_epic_present".
                                 And do not add any characters like //,#,##,\\n or \.
 
