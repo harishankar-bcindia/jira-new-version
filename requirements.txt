@@ -1,6 +1,5 @@
 streamlit
 python-dotenv
-crewai
 db-sqlite3
 requests
 langchain
@@ -9,3 +8,5 @@ langchain_community
 pandas
 openpyxl
 datetime
+crewai
+threading
