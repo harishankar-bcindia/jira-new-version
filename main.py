@@ -26,13 +26,17 @@ output_df_list = []
 def handling_gpt_ouput(gpt_response):
     try:
         # Try parsing the variable as a list
+        print(f"level1 {type(gpt_response)}")
         parsed_variable = ast.literal_eval(gpt_response)
+        print(f"level2 {type(gpt_response)}")
         logging.info('GPT response parsed successfully.')
         if isinstance(parsed_variable, list):
+            print(f"level3 {type(gpt_response)}")
             # If it's already a list, return it as is
             logging.info('GPT response is already a JSON inside list.')
             return parsed_variable
     except (ValueError, SyntaxError):
+        print(f"level4 {type(gpt_response)}")
         pass
 
     # Extract content between first and last curly braces
@@ -40,9 +44,12 @@ def handling_gpt_ouput(gpt_response):
     end_index = gpt_response.rfind('}')
 
     if start_index != -1 and end_index != -1:
+        print(f"level5 {type(gpt_response)}")
         extracted_content = gpt_response[start_index:end_index + 1]
+        print(f"level6 {type(gpt_response)}")
         logging.info(f'Extracted GPT response as JSON in string format: {extracted_content}')
         output = eval(extracted_content)
+        print(f"level7 {type(gpt_response)}")
         logging.info(f'Evaluated(eval()) string JSON response inside list: {[output]}')
         return  [output]  # Return the extracted content as a list
     logging.exception(f'handling_gpt_output_failed()- returning empty list :{gpt_response}')
@@ -287,6 +294,7 @@ def call_crew(df):
 
             output_df.insert(1, 'ticket_url', output_df.pop('ticket_url'))
         except Exception as err:
+            print(f"Error is: {err}")
             result = [
 
                                     {
