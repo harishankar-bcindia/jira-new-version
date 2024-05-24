@@ -165,7 +165,7 @@ def crew_agent(ticket_detail):    #ticket detail is the df of each row.
 
                 '''
     # expected_output = f"Output should be only in this format after filling all appropriate details {output_json}"
-    expected_output = 'Return only filled raw JSON as output key like this-> {"output" : filled_json}'
+    expected_output = 'Return only filled raw JSON as key name "final_output" like this-> {"final_output" : filled_json} .'
 
     Title_validator = Agent(
                             role = "Jira ticket Summary Validator",
@@ -191,7 +191,7 @@ def crew_agent(ticket_detail):    #ticket detail is the df of each row.
     print({"crew_output ":result})
     output = handling_gpt_ouput(result)
     print({"handled_gpt_output":output})
-    return output[0]["output"]
+    return output[0]["final_output"]
 
 
 def generate_url(ticket_id):
