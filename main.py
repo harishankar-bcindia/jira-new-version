@@ -28,10 +28,10 @@ def handling_gpt_ouput(gpt_response):
         # Try parsing the variable as a list
         print(f"level1 {type(gpt_response)}")
         parsed_variable = ast.literal_eval(gpt_response)
-        print(f"level2 {type(gpt_response)}")
+        print(f"level2 {type(parsed_variable)}")
         logging.info('GPT response parsed successfully.')
         if isinstance(parsed_variable, list):
-            print(f"level3 {type(gpt_response)}")
+            print(f"level3 {type(parsed_variable)}")
             # If it's already a list, return it as is
             logging.info('GPT response is already a JSON inside list.')
             return parsed_variable
@@ -46,10 +46,11 @@ def handling_gpt_ouput(gpt_response):
     if start_index != -1 and end_index != -1:
         print(f"level5 {type(gpt_response)}")
         extracted_content = gpt_response[start_index:end_index + 1]
-        print(f"level6 {type(gpt_response)}")
+        print(f"level6 {type(extracted_content)}")
         logging.info(f'Extracted GPT response as JSON in string format: {extracted_content}')
+        print(f"extracted content is: {extracted_content}")
         output = eval(extracted_content)
-        print(f"level7 {type(gpt_response)}")
+        print(f"level7 {type(output)}")
         logging.info(f'Evaluated(eval()) string JSON response inside list: {[output]}')
         return  [output]  # Return the extracted content as a list
     logging.exception(f'handling_gpt_output_failed()- returning empty list :{gpt_response}')
